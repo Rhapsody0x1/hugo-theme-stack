@@ -17,19 +17,20 @@
     .tagCloud-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
 
         a {
-            background: var(--card-background);
-            box-shadow: var(--shadow-l1);
-            border-radius: var(--tag-border-radius);
-            padding: 8px 20px;
+            /* 标签与分类项采用独立玻璃小卡片 */
+            @extend .glass-effect;
+            border-radius: 12px;
+            padding: 8px 14px;
             color: var(--card-text-color-main);
             font-size: 1.4rem;
-            transition: box-shadow 0.3s ease;
+            transition: transform .25s ease, box-shadow .25s ease;
 
             &:hover {
-                box-shadow: var(--shadow-l2);
+                transform: translateY(-4px);
+                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
             }
         }
     }
@@ -38,9 +39,10 @@
 /* Archives widget */
 .widget.archives {
     .widget-archive--list {
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        background-color: var(--card-background);
+        /* 使用分项玻璃卡片：父容器透明，仅控制内边距与分隔 */
+        background: transparent;
+        box-shadow: none;
+        border-radius: 0;
     }
 
     .archives-year {
@@ -49,8 +51,10 @@
         }
 
         a {
+            /* 每一行是一个独立玻璃卡片，缩小间距 */
+            @extend .glass-effect;
             font-size: 1.4rem;
-            padding: 18px 25px;
+            padding: 12px 16px;
             display: flex;
 
             span.year {
@@ -63,5 +67,84 @@
                 color: var(--card-text-color-tertiary);
             }
         }
+
+        &:not(:last-of-type) {
+            margin-bottom: 8px;
+            border-bottom: none;
+        }
     }
+}
+
+/* 统一右侧小部件为玻璃卡片，并压紧标题与图标 */
+.right-sidebar {
+    .widget {
+        @extend .glass-effect;
+        border-radius: 16px;
+        padding: 16px;
+        overflow: visible;
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        grid-auto-rows: min-content;
+        --widget-header-gap: 0px;
+        column-gap: var(--widget-header-gap);
+        row-gap: 12px;
+        align-items: center;
+        border: none;
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+
+        &:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        >.widget-icon {
+            grid-column: 1;
+            grid-row: 1;
+            display: inline-flex;
+            align-items: center;
+            margin-right: 8px;
+        }
+
+        >.widget-title,
+        >.section-title {
+            grid-column: 2;
+            grid-row: 1;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        > :not(.widget-icon):not(.widget-title):not(.section-title) {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+/* 搜索部件：表单横排，与 section 卡片一致 */
+.right-sidebar .search-form p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.right-sidebar .search-form input {
+    flex: 1 1 auto;
+    min-height: 44px;
+    border-radius: 12px;
+}
+
+.right-sidebar .search-form button {
+    height: 44px;
+    width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 标签云在右侧栏的间距统一 */
+.right-sidebar .tagCloud .tagCloud-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }

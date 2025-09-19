@@ -2,7 +2,7 @@ toggleMenu:
     other: 切换菜单
 
 darkMode:
-    other: 暗色模式
+    other: 深色模式
 
 list:
     page: "{{ .Count }} 个页面"
@@ -26,6 +26,9 @@ article:
 
     readingTime:
         other: "阅读时长: {{ .Count }} 分钟"
+
+    wordCount:
+        other: "{{.Count}} 字"
 
 notFound:
     title:
@@ -65,3 +68,13 @@ footer:
 
     designedBy:
         other: 主题 {{ .Theme }} 由 {{ .DesignedBy }} 设计
+
+menu:
+    home:
+        other: 首页
+    archives:
+        other: 归档
+    links:
+        other: 友情链接
+    search:
+        other: 搜索

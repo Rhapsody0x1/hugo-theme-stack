@@ -29,3 +29,66 @@ a {
         color: var(--body-text-color);
     }
 }
+
+/* Liquid glass utility and gradient background */
+
+/* 动态渐变动画 */
+@keyframes gradient-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* 全局背景动画设置 */
+body {
+    background-size: 400% 400%;
+    animation: gradient-flow 15s ease infinite;
+}
+
+/* 亮/暗色模式渐变背景 */
+html[data-scheme="light"] {
+    body {
+        background-color: transparent !important;
+        background-image: linear-gradient(-45deg, #e79b84, #d6aae7, #81bed4, #80d2bf);
+    }
+}
+
+html[data-scheme="dark"] {
+    body {
+        background-color: transparent !important;
+        background-image: linear-gradient(-45deg, #0f2548, #27184c, #4c1352, #0e3e4d);
+    }
+}
+
+/* 玻璃效果工具类 */
+.glass-effect {
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    backdrop-filter: saturate(180%) blur(14px);
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background-clip: padding-box;
+}
+
+/* 玻璃效果在亮/暗模式的底色与边框 */
+html[data-scheme="light"] {
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+    }
+}
+
+html[data-scheme="dark"] {
+    .glass-effect {
+        background: rgba(20, 20, 20, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+}

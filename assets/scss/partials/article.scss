@@ -7,15 +7,17 @@
     article {
         display: flex;
         flex-direction: column;
-        background-color: var(--card-background);
-        box-shadow: var(--shadow-l1);
-        border-radius: var(--card-border-radius);
+        border-radius: 16px;
         overflow: hidden;
 
-        transition: box-shadow 0.3s ease;
+        /* 应用液态玻璃效果与统一悬停动画 */
+        @extend .glass-effect;
+        border: none;
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 
         &:hover {
-            box-shadow: var(--shadow-l2);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
         }
 
         .article-image {
@@ -79,6 +81,7 @@
     line-height: 1.5;
     margin: 0;
     font-size: 1.75rem;
+
     @include respond(xl) {
         font-size: 2rem;
     }
@@ -94,7 +97,7 @@
 .article-translations {
     display: flex;
     color: var(--card-text-color-tertiary);
-    gap: 15px;
+    gap: 16px;
 
     svg {
         vertical-align: middle;
@@ -110,10 +113,10 @@
         color: var(--card-text-color-tertiary);
     }
 
-    & > div {
+    &>div {
         display: inline-flex;
         align-items: center;
-        gap: 15px;
+        gap: 4px;
     }
 }
 
@@ -122,7 +125,7 @@
 }
 
 .article-translations {
-    & > div {
+    &>div {
         flex-wrap: wrap;
     }
 }
@@ -151,9 +154,9 @@
 
 /* Compact style article list */
 .article-list--compact {
-    border-radius: var(--card-border-radius);
-    box-shadow: var(--shadow-l1);
-    background-color: var(--card-background);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     --image-size: 50px;
 
     @include respond(md) {
@@ -161,15 +164,20 @@
     }
 
     article {
-        & > a {
+
+        /* 每一项采用玻璃效果的可点击容器 */
+        &>a {
+            @extend .glass-effect;
             display: flex;
             align-items: center;
-            padding: var(--small-card-padding);
+            padding: 12px;
             gap: 15px;
+            transition: transform .25s ease, box-shadow .25s ease;
         }
 
         &:not(:last-of-type) {
-            border-bottom: 1.5px solid var(--card-separator-color);
+            border-bottom: none;
+            margin-bottom: 10px;
         }
 
         .article-details {
@@ -205,6 +213,11 @@
             color: var(--card-text-color-tertiary);
             margin-top: 10px;
             line-height: 1.5;
+        }
+
+        &>a:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
         }
     }
 }
@@ -272,6 +285,17 @@
 
             @include respond(sm) {
                 font-size: 2.2rem;
+            }
+        }
+
+        /* 无图分类卡片：高度自适应并采用玻璃效果 */
+        &.no-image {
+            height: auto;
+            min-height: 110px;
+            @extend .glass-effect;
+
+            .article-details {
+                justify-content: center;
             }
         }
     }

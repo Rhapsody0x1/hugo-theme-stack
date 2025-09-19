@@ -1,8 +1,8 @@
 .section-card {
-    border-radius: var(--card-border-radius);
-    background-color: var(--card-background);
+    /* 顶部卡片采用液态玻璃风格（无悬停动效） */
+    @extend .glass-effect;
+    border-radius: 16px;
     padding: var(--small-card-padding);
-    box-shadow: var(--shadow-l1);
     display: flex;
     align-items: center;
     gap: 20px;
@@ -46,17 +46,30 @@
 }
 
 .subsection-list {
-    overflow-x: auto;
+    /* 移除横向滚动，使用响应式网格承载 tile 列表 */
+    overflow-x: visible;
 
     .article-list--tile {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
         padding-bottom: 15px;
 
         article {
-            width: 250px;
-            height: 150px;
-            margin-right: 20px;
-            flex-shrink: 0;
+            width: 100%;
+            margin-right: 0;
+            flex-shrink: 1;
+            box-shadow: none;
+            /* 修复顶部区域不正确的阴影 */
+
+            /* 无图分类卡片：高度自适应并采用玻璃效果 */
+            &.no-image {
+                @extend .glass-effect;
+                height: auto;
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+            }
 
             .article-title {
                 margin: 0;
@@ -64,7 +77,7 @@
             }
 
             .article-details {
-                padding: 20px;
+                padding: 16px;
             }
         }
     }
