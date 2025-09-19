@@ -1,6 +1,4 @@
 .section-card {
-    /* 顶部卡片采用液态玻璃风格（无悬停动效） */
-    @extend .glass-effect;
     border-radius: 16px;
     padding: var(--small-card-padding);
     display: flex;
