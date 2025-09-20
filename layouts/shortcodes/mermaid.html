@@ -1,0 +1,97 @@
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+<div data-mermaid-container style="border-radius: var(--card-border-radius);">
+</div>
+<script type="text/template" data-mermaid-source>
+    {{.Inner}}
+</script>
+
+<script>
+    (function () {
+        const currentScript = document.currentScript;
+        if (!currentScript) return;
+        const templateEl = currentScript.previousElementSibling;
+        const container = templateEl && templateEl.hasAttribute('data-mermaid-source')
+            ? templateEl.previousElementSibling
+            : null;
+        if (!container) return;
+        const source = templateEl && templateEl.hasAttribute('data-mermaid-source') ? templateEl.textContent : '';
+
+        function getThemeFromDataset() {
+            return (document.documentElement.dataset.scheme === 'dark') ? 'dark' : 'default';
+        }
+
+        let mermaidTheme = getThemeFromDataset();
+        let mermaidConfig = {
+            theme: mermaidTheme,
+            logLevel: 'fatal',
+            securityLevel: 'strict',
+            startOnLoad: false,
+            arrowMarkerAbsolute: false,
+
+            er: {
+                diagramPadding: 20,
+                layoutDirection: 'TB',
+                minEntityWidth: 100,
+                minEntityHeight: 75,
+                entityPadding: 15,
+                stroke: 'gray',
+                fill: 'honeydew',
+                fontSize: 12,
+                useMaxWidth: true,
+            },
+            flowchart: {
+                diagramPadding: 8,
+                htmlLabels: true,
+                curve: 'basis',
+            },
+            sequence: {
+                diagramMarginX: 50,
+                diagramMarginY: 10,
+                actorMargin: 50,
+                width: 150,
+                height: 65,
+                boxMargin: 10,
+                boxTextMargin: 5,
+                noteMargin: 10,
+                messageMargin: 35,
+                messageAlign: 'center',
+                mirrorActors: true,
+                bottomMarginAdj: 1,
+                useMaxWidth: true,
+                rightAngles: false,
+                showSequenceNumbers: false,
+            },
+            gantt: {
+                titleTopMargin: 25,
+                barHeight: 20,
+                barGap: 4,
+                topPadding: 50,
+                leftPadding: 75,
+                gridLineStartPadding: 35,
+                fontSize: 11,
+                fontFamily: '"Open-Sans", "sans-serif"',
+                numberSectionStyles: 4,
+                axisFormat: '%Y-%m-%d',
+                topAxis: false,
+            },
+        };
+
+        function renderMermaid() {
+            if (!container || !source || !window.mermaid) return;
+
+            mermaid.initialize(mermaidConfig);
+            container.classList.add('mermaid');
+            container.removeAttribute('data-processed');
+            container.innerHTML = source;
+            mermaid.init(undefined, container);
+        }
+
+        renderMermaid();
+
+        window.addEventListener('onColorSchemeChange', (e) => {
+            mermaidConfig.theme = (e && e.detail === 'dark') ? 'dark' : 'default';
+            renderMermaid();
+        });
+    })();
+</script>
