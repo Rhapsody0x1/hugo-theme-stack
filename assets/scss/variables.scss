@@ -106,7 +106,17 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
 */
 :root {
     --blockquote-border-size: 4px;
-    --blockquote-background-color: rgb(248 248 248);
+    /* 基于主题色的低饱和度配色（逐级加深/变浅） */
+    --blockquote-background-color: color-mix(in srgb, var(--accent-color) 6%, var(--card-background));
+    --blockquote-border-color: color-mix(in srgb, var(--accent-color) 22%, transparent);
+    /* 嵌套层级 1/2/3（亮色：向内逐渐加深） */
+    --blockquote-bg-1: color-mix(in srgb, var(--accent-color) 6%, var(--card-background));
+    --blockquote-bg-2: color-mix(in srgb, var(--accent-color) 10%, var(--card-background));
+    --blockquote-bg-3: color-mix(in srgb, var(--accent-color) 14%, var(--card-background));
+    /* 引用框毛玻璃模糊半径（亮色：越内层越大） */
+    --blockquote-blur-1: 6px;
+    --blockquote-blur-2: 9px;
+    --blockquote-blur-3: 12px;
 
     --heading-border-size: 4px;
 
@@ -120,19 +130,36 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
     --code-background-color: rgba(0, 0, 0, 0.12);
     --code-text-color: #808080;
 
-    --table-border-color: #dadada;
-    --tr-even-background-color: #efefee;
+    --table-border-color: rgba(64, 118, 193, 0.35);
+    --tr-even-background-color: transparent;
+    /* 表头背景低对比纯色（亮） */
+    --table-head-background-color: rgba(0, 0, 0, 0.04);
 
     --kbd-border-color: #dadada;
+    /* 代码块边框颜色（亮色模式） */
+    --code-block-border-color: color-mix(in srgb, var(--accent-color) 18%, transparent);
 
     &[data-scheme="dark"] {
         --code-background-color: #272822;
         --code-text-color: rgba(255, 255, 255, 0.9);
 
-        --table-border-color: #717171;
-        --tr-even-background-color: #545454;
+        --table-border-color: rgba(255, 255, 255, 0.22);
+        --tr-even-background-color: transparent;
+        /* 表头背景低对比纯色（暗） */
+        --table-head-background-color: rgba(255, 255, 255, 0.06);
 
-        --blockquote-background-color: rgb(75 75 75);
+        /* 暗色下的低饱和度主题色系（向内逐渐变浅） */
+        --blockquote-background-color: color-mix(in srgb, var(--accent-color) 12%, var(--card-background));
+        --blockquote-border-color: color-mix(in srgb, var(--accent-color) 28%, transparent);
+        --blockquote-bg-1: color-mix(in srgb, var(--accent-color) 12%, var(--card-background));
+        --blockquote-bg-2: color-mix(in srgb, var(--accent-color) 16%, var(--card-background));
+        --blockquote-bg-3: color-mix(in srgb, var(--accent-color) 20%, var(--card-background));
+        /* 代码块边框颜色（暗色模式） */
+        --code-block-border-color: color-mix(in srgb, var(--accent-color) 24%, transparent);
+        /* 暗色：越内层越小，形成下凹层级 */
+        --blockquote-blur-1: 10px;
+        --blockquote-blur-2: 7px;
+        --blockquote-blur-3: 4px;
     }
 }
 
