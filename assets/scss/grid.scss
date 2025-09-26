@@ -109,7 +109,7 @@ main.main {
 }
 
 /* 当 ToC 未锁定且隐藏时，压缩右侧栏宽度，释放正文空间 */
-body:not(.toc-locked).toc-hidden {
+body.article-page:not(.toc-locked).toc-hidden {
     .right-sidebar {
         max-width: 0 !important;
         width: 0 !important;

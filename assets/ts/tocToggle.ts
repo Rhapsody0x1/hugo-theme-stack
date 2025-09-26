@@ -5,10 +5,10 @@ export function setupTocToggle(): void {
     const rightSidebar = document.querySelector('.right-sidebar') as HTMLElement | null;
     if (!rightSidebar) return;
 
-    const tocSection = rightSidebar.querySelector('.widget.archives');
+    const tocSection = rightSidebar.querySelector('.widget.toc-widget');
     if (!tocSection) return;
 
-    let isLocked = false;
+    let isLocked = true; // 进入文章页默认锁定
     const LOCKED_CLASS = 'toc-locked';
     const HOVER_ZONE_PX = 48; // distance from right edge to reveal when unlocked
 
@@ -27,6 +27,8 @@ export function setupTocToggle(): void {
     // 点击整个目录卡片，切换锁定
     tocSection.addEventListener('click', () => {
         setLocked(!isLocked);
+        // 当解锁后，开启自动显隐逻辑；锁定则关闭
+        document.body.classList.toggle('toc-auto', !isLocked);
         flash();
     });
 
@@ -36,6 +38,8 @@ export function setupTocToggle(): void {
 
     const onMouseMove = (e: MouseEvent) => {
         if (isLocked) return;
+        // 仅在允许自动显隐时才处理（进入页面默认不自动）
+        if (!document.body.classList.contains('toc-auto')) return;
         const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
         const distanceFromRight = viewportWidth - e.clientX;
         const shouldReveal = distanceFromRight <= HOVER_ZONE_PX;
@@ -64,8 +68,13 @@ export function setupTocToggle(): void {
 
     window.addEventListener('mousemove', onMouseMove);
 
-    // 初始为未锁定且隐藏
-    document.body.classList.add('toc-hidden');
+    // 初始为显示且锁定（不播放入场动画，也不添加隐藏类）
+    setLocked(true);
+    rightSidebar.classList.add('reveal');
+    (tocSection as HTMLElement).classList.remove('anim-in');
+    (tocSection as HTMLElement).classList.remove('anim-out');
+    document.body.classList.remove('toc-hidden');
+    document.body.classList.remove('toc-auto');
 
     // When leaving window on the right, keep hidden if unlocked
     window.addEventListener('mouseleave', () => {

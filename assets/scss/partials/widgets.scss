@@ -124,7 +124,7 @@
 .right-sidebar {
     position: relative;
 
-    .widget.archives {
+    .widget.toc-widget {
         position: relative;
 
         /* 点击整个卡片切换锁定，点击时轻微压下反馈 */
@@ -143,8 +143,8 @@
     }
 }
 
-/* 解锁状态下：鼠标不在右侧则收起 ToC */
-body:not(.toc-locked) {
+/* 解锁状态下：鼠标不在右侧则收起 ToC（仅 ToC 小部件） */
+body.article-page.toc-auto:not(.toc-locked) {
     .right-sidebar {
         transition: transform 0.4s ease, opacity 0.35s ease;
         /* 放慢动画 */
@@ -186,13 +186,14 @@ body:not(.toc-locked) {
 }
 
 /* 锁定状态：始终可见，且移除 hover 起伏动画 */
-body.toc-locked {
+body.article-page.toc-locked {
     .right-sidebar {
         transform: none;
         opacity: 1;
         pointer-events: auto;
 
-        .widget:hover {
+        /* 锁定时只影响 ToC 小部件的 hover 行为 */
+        .widget.toc-widget:hover {
             transform: none;
             box-shadow: var(--shadow-l1);
         }
