@@ -12,6 +12,7 @@ import createElement from 'ts/createElement';
 import StackColorScheme from 'ts/colorScheme';
 import { setupScrollspy } from 'ts/scrollspy';
 import { setupSmoothAnchors } from "ts/smoothAnchors";
+import { setupTocToggle } from 'ts/tocToggle';
 
 let Stack = {
     init: () => {
@@ -26,6 +27,9 @@ let Stack = {
             setupSmoothAnchors();
             setupScrollspy();
         }
+
+        // Initialize ToC toggle/lock behavior on pages that have right sidebar
+        setupTocToggle();
 
         /**
          * Add linear gradient background to tile style article

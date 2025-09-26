@@ -87,6 +87,13 @@ main.main {
     @include respond(md) {
         padding-top: var(--main-top-padding);
     }
+
+    /* ToC 未锁定且隐藏时，正文获得更多空间（主要效果由右栏隐藏实现） */
+    body:not(.toc-locked) & {
+        @include respond(lg) {
+            /* 保持流式布局，无需强制宽度，择机在需要时扩展 */
+        }
+    }
 }
 
 .main-container {
@@ -98,5 +105,17 @@ main.main {
 
     @include respond(md) {
         padding: 0 20px;
+    }
+}
+
+/* 当 ToC 未锁定且隐藏时，压缩右侧栏宽度，释放正文空间 */
+body:not(.toc-locked).toc-hidden {
+    .right-sidebar {
+        max-width: 0 !important;
+        width: 0 !important;
+        flex-basis: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
     }
 }

@@ -241,6 +241,27 @@
         // }
     }
 
+    ol,
+    ul {
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+    }
+
+    li {
+        margin-top: 0em;
+
+        &>ol,
+        &>ul {
+            margin-left: 0em;
+            padding-inline-start: 1.1em;
+        }
+
+        &>p {
+            margin-top: 0.25em;
+            margin-bottom: 0.25em;
+        }
+    }
+
     figure {
         text-align: center;
 

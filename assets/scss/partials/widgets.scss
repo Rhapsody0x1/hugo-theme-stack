@@ -120,6 +120,85 @@
     }
 }
 
+/* ToC: 锁定/隐藏交互样式 */
+.right-sidebar {
+    position: relative;
+
+    .widget.archives {
+        position: relative;
+
+        /* 点击整个卡片切换锁定，点击时轻微压下反馈 */
+        &.toc-clicked {
+            transform: translateY(1px);
+        }
+
+        /* 入场/出场动画：卡片与内部目录轻微平移+淡入淡出 */
+        &.anim-in {
+            animation: toc-slide-in 0.45s ease both;
+        }
+
+        &.anim-out {
+            animation: toc-slide-out 0.45s ease both;
+        }
+    }
+}
+
+/* 解锁状态下：鼠标不在右侧则收起 ToC */
+body:not(.toc-locked) {
+    .right-sidebar {
+        transition: transform 0.4s ease, opacity 0.35s ease;
+        /* 放慢动画 */
+        will-change: transform, opacity;
+        transform: translateX(20px);
+        opacity: 0.01;
+        pointer-events: none;
+
+        &.reveal {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+}
+
+@keyframes toc-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes toc-slide-out {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+}
+
+/* 锁定状态：始终可见，且移除 hover 起伏动画 */
+body.toc-locked {
+    .right-sidebar {
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+
+        .widget:hover {
+            transform: none;
+            box-shadow: var(--shadow-l1);
+        }
+    }
+}
+
 /* 搜索部件：表单横排，与 section 卡片一致 */
 .right-sidebar .search-form p {
     display: flex;
