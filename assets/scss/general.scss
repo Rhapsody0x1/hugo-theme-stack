@@ -30,65 +30,67 @@ a {
     }
 }
 
-/* Liquid glass utility and gradient background */
-
-/* 动态渐变动画 */
-@keyframes gradient-flow {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* 全局背景动画设置 */
-body {
-    background-size: 400% 400%;
-    animation: gradient-flow 15s ease infinite;
-}
-
-/* 亮/暗色模式渐变背景 */
+/* Static mesh blob background */
 html[data-scheme="light"] {
     body {
-        background-color: transparent !important;
-        background-image: linear-gradient(-45deg, #e79b84, #d6aae7, #81bed4, #80d2bf);
+        background:
+            radial-gradient(ellipse at 10% 15%, rgba(140, 120, 200, 0.35) 0%, transparent 45%),
+            radial-gradient(ellipse at 85% 8%, rgba(200, 150, 130, 0.28) 0%, transparent 40%),
+            radial-gradient(ellipse at 65% 65%, rgba(100, 155, 200, 0.24) 0%, transparent 45%),
+            radial-gradient(ellipse at 28% 82%, rgba(130, 190, 170, 0.20) 0%, transparent 40%),
+            var(--body-background);
+        background-attachment: fixed;
     }
 }
 
 html[data-scheme="dark"] {
     body {
-        background-color: transparent !important;
-        background-image: linear-gradient(-45deg, #0f2548, #27184c, #4c1352, #0e3e4d);
+        background:
+            radial-gradient(ellipse at 10% 15%, rgba(60, 50, 120, 0.50) 0%, transparent 45%),
+            radial-gradient(ellipse at 85% 8%, rgba(50, 65, 110, 0.40) 0%, transparent 40%),
+            radial-gradient(ellipse at 65% 65%, rgba(35, 60, 105, 0.35) 0%, transparent 45%),
+            radial-gradient(ellipse at 28% 82%, rgba(45, 80, 90, 0.25) 0%, transparent 40%),
+            var(--body-background);
+        background-attachment: fixed;
     }
 }
 
-/* 玻璃效果工具类 */
+/* Liquid glass utility — Apple iOS 26 style */
 .glass-effect {
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
-    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
     border-radius: 16px;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.16);
     background-clip: padding-box;
 }
 
-/* 玻璃效果在亮/暗模式的底色与边框 */
 html[data-scheme="light"] {
     .glass-effect {
-        background: rgba(255, 255, 255, 0.55);
-        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: linear-gradient(
+            160deg,
+            rgba(255, 255, 255, 0.55) 0%,
+            rgba(255, 255, 255, 0.35) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.50);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.06),
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.7),
+            inset 1px 0 0 0 rgba(255, 255, 255, 0.4),
+            inset 0 -1px 0 0 rgba(0, 0, 0, 0.04);
     }
 }
 
 html[data-scheme="dark"] {
     .glass-effect {
-        background: rgba(20, 20, 20, 0.55);
-        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: linear-gradient(
+            160deg,
+            rgba(50, 50, 55, 0.55) 0%,
+            rgba(30, 30, 35, 0.40) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+            inset 1px 0 0 0 rgba(255, 255, 255, 0.08),
+            inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
     }
 }

@@ -20,17 +20,23 @@
         gap: 8px;
 
         a {
-            /* 标签与分类项采用独立玻璃小卡片 */
-            @extend .glass-effect;
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 8px 14px;
             color: var(--card-text-color-main);
             font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.40);
+            box-shadow: var(--shadow-l1);
             transition: transform .25s ease, box-shadow .25s ease;
 
             &:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+            }
+
+            [data-scheme="dark"] & {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.10);
             }
         }
     }
@@ -51,11 +57,19 @@
         }
 
         a {
-            /* 每一行是一个独立玻璃卡片，缩小间距 */
-            @extend .glass-effect;
             font-size: 1.4rem;
             padding: 12px 16px;
             display: flex;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.40);
+            box-shadow: var(--shadow-l1);
+            transition: transform .25s ease, box-shadow .25s ease;
+
+            [data-scheme="dark"] & {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.10);
+            }
 
             span.year {
                 flex: 1;
