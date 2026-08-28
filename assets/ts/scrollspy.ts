@@ -57,7 +57,7 @@ function setupScrollspy() {
 
     let scrollableNavigation = document.querySelector(tocQuery) as HTMLElement | undefined;
     if (!scrollableNavigation) {
-        console.warn("No toc matched query", tocQuery);
+        // 无目录的页面（如短文章、links 页）本就没有 #TableOfContents，安静跳过
         return;
     }
 

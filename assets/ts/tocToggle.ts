@@ -24,8 +24,10 @@ export function setupTocToggle(): void {
         document.body.classList.toggle(LOCKED_CLASS, locked);
     };
 
-    // 点击整个目录卡片，切换锁定
-    tocSection.addEventListener('click', () => {
+    // 点击整个目录卡片，切换锁定（点击条目链接仅跳转，不切换锁定）
+    tocSection.addEventListener('click', (e) => {
+        if (!(e.target instanceof Element)) return;
+        if (e.target.closest('a')) return;
         setLocked(!isLocked);
         // 当解锁后，开启自动显隐逻辑；锁定则关闭
         document.body.classList.toggle('toc-auto', !isLocked);
@@ -36,10 +38,24 @@ export function setupTocToggle(): void {
     let hideTimer: number | null = null;
     const HIDE_DELAY_MS = 400; // 触发隐藏前延迟
 
+    let rafPending = false;
+    let lastMouseEvent: MouseEvent | null = null;
+
     const onMouseMove = (e: MouseEvent) => {
         if (isLocked) return;
         // 仅在允许自动显隐时才处理（进入页面默认不自动）
         if (!document.body.classList.contains('toc-auto')) return;
+        // requestAnimationFrame 节流：每帧最多处理一次，避免频繁 getBoundingClientRect
+        lastMouseEvent = e;
+        if (rafPending) return;
+        rafPending = true;
+        window.requestAnimationFrame(() => {
+            rafPending = false;
+            if (lastMouseEvent) handleMouseMove(lastMouseEvent);
+        });
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
         const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
         const distanceFromRight = viewportWidth - e.clientX;
         const shouldReveal = distanceFromRight <= HOVER_ZONE_PX;

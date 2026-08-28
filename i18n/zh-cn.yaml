@@ -30,6 +30,25 @@ article:
     wordCount:
         other: "{{.Count}} 字"
 
+    tocToggleHint:
+        other: "点击目录卡片：固定 / 自动隐藏"
+
+alert:
+    note:
+        other: 注意
+
+    tip:
+        other: 提示
+
+    important:
+        other: 重要
+
+    warning:
+        other: 警告
+
+    caution:
+        other: 当心
+
 notFound:
     title:
         other: 404 错误

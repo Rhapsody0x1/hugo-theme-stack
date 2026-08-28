@@ -30,8 +30,8 @@
             transition: transform .25s ease, box-shadow .25s ease;
 
             &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+                transform: translateY(var(--hover-lift));
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             }
 
             [data-scheme="dark"] & {
@@ -65,6 +65,12 @@
             border: 1px solid rgba(255, 255, 255, 0.40);
             box-shadow: var(--shadow-l1);
             transition: transform .25s ease, box-shadow .25s ease;
+
+            /* 与标签云一致的轻微 hover 反馈 */
+            &:hover {
+                transform: translateY(var(--hover-lift));
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
 
             [data-scheme="dark"] & {
                 background: rgba(255, 255, 255, 0.08);
@@ -104,12 +110,6 @@
         row-gap: 12px;
         align-items: center;
         border: none;
-        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-
-        &:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
-        }
 
         >.widget-icon {
             grid-column: 1;
@@ -157,12 +157,20 @@
     }
 }
 
+/* 过渡挂在基础规则上：进入/退出悬挂模式两个方向都有动画；
+   包含 max-width/padding，使右栏收起时正文同步平滑展开 */
+body.article-page .right-sidebar {
+    transition:
+        transform 0.4s ease,
+        opacity 0.35s ease,
+        max-width 0.4s ease,
+        padding 0.4s ease;
+    will-change: transform, opacity;
+}
+
 /* 解锁状态下：鼠标不在右侧则收起 ToC（仅 ToC 小部件） */
 body.article-page.toc-auto:not(.toc-locked) {
     .right-sidebar {
-        transition: transform 0.4s ease, opacity 0.35s ease;
-        /* 放慢动画 */
-        will-change: transform, opacity;
         transform: translateX(20px);
         opacity: 0.01;
         pointer-events: none;
@@ -172,6 +180,49 @@ body.article-page.toc-auto:not(.toc-locked) {
             opacity: 1;
             pointer-events: auto;
         }
+    }
+}
+
+/* ToC 卡片可点击的交互暗示：指针光标 + 标题行右侧 pin 图标 */
+.right-sidebar .widget.toc-widget {
+    cursor: pointer;
+    user-select: none;
+
+    .widget-title {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .toc-toggle-hint {
+            display: inline-flex;
+            align-items: center;
+            color: var(--card-text-color-tertiary);
+            transition: color 0.2s ease;
+
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+
+    &:hover .toc-toggle-hint {
+        color: var(--accent-color);
+    }
+}
+
+/* 锁定状态显示 pin；悬挂（自动隐藏）状态显示 pin-off */
+.widget.toc-widget .toc-toggle-hint .icon-unpin {
+    display: none;
+}
+
+body.article-page.toc-auto:not(.toc-locked) .widget.toc-widget .toc-toggle-hint {
+    .icon-pin {
+        display: none;
+    }
+
+    .icon-unpin {
+        display: inline;
     }
 }
 
@@ -199,18 +250,12 @@ body.article-page.toc-auto:not(.toc-locked) {
     }
 }
 
-/* 锁定状态：始终可见，且移除 hover 起伏动画 */
+/* 锁定状态：始终可见 */
 body.article-page.toc-locked {
     .right-sidebar {
         transform: none;
         opacity: 1;
         pointer-events: auto;
-
-        /* 锁定时只影响 ToC 小部件的 hover 行为 */
-        .widget.toc-widget:hover {
-            transform: none;
-            box-shadow: var(--shadow-l1);
-        }
     }
 }
 

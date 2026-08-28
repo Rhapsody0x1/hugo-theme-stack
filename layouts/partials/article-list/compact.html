@@ -4,11 +4,14 @@
             <h2 class="article-title">
                 {{- .Title -}}
             </h2>
+            {{/* 分类/标签等 term 页面没有日期，避免渲染 Jan 01, 0001 */}}
+            {{ if not .Date.IsZero }}
             <footer class="article-time">
                 <time datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>
                     {{- .Date | time.Format (or .Site.Params.dateFormat.published "Jan 02, 2006") -}}
                 </time>
             </footer>
+            {{ end }}
         </div>
 
         {{- $image := partialCached "helper/image" (dict "Context" . "Type" "articleList") .RelPermalink "articleList" -}}

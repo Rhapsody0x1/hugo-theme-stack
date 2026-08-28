@@ -224,6 +224,23 @@
     }
 }
 
+/* 移动端（<md）展开菜单：与整体一致的玻璃卡片，替换默认白卡；
+   @mixin 在媒体查询内原地展开，无 @extend 跨媒体查询问题 */
+@media (max-width: map-get($breakpoints, md) - 0.02px) {
+    #main-menu {
+        @include glass-effect;
+        margin: 0;
+    }
+
+    html[data-scheme="light"] #main-menu {
+        @include glass-effect-light;
+    }
+
+    html[data-scheme="dark"] #main-menu {
+        @include glass-effect-dark;
+    }
+}
+
 .menu-social {
     list-style: none;
     padding: 0;

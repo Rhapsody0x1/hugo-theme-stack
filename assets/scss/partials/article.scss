@@ -10,14 +10,13 @@
         border-radius: 16px;
         overflow: hidden;
 
-        /* 应用液态玻璃效果与统一悬停动画 */
+        /* 应用液态玻璃效果；仅悬停在封面/标题链接上时轻微上浮，精确表达可点区域 */
         @extend .glass-effect;
         border: none;
         transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 
-        &:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+        &:has(.article-image a:hover, .article-title a:hover) {
+            transform: translateY(var(--hover-lift));
         }
 
         .article-image {
@@ -218,8 +217,7 @@
         }
 
         &>a:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(var(--hover-lift));
         }
     }
 }

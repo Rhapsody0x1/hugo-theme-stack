@@ -1,9 +1,24 @@
 {{ if (.Context.Scratch.Get "TOCEnabled") }}
-<section class="widget archives toc-widget">
+<section class="widget archives toc-widget" title="{{ T "article.tocToggleHint" }}">
     <div class="widget-icon">
         {{ partial "helper/icon" "hash" }}
     </div>
-    <h2 class="widget-title section-title">{{ T "article.tableOfContents" }}</h2>
+    <h2 class="widget-title section-title">
+        <span>{{ T "article.tableOfContents" }}</span>
+        <span class="toc-toggle-hint" aria-hidden="true">
+            <svg class="icon-pin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 4h6l1 7 3 3v1H5v-1l3-3 1-7Z" />
+                <path d="M12 15v6" />
+            </svg>
+            <svg class="icon-unpin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 4h6l1 7 3 3v1H5v-1l3-3 1-7Z" />
+                <path d="M12 15v6" />
+                <path d="M4 4l16 16" />
+            </svg>
+        </span>
+    </h2>
 
     <div class="widget--toc">
         {{ .Context.TableOfContents }}

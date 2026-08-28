@@ -8,10 +8,18 @@
     }
 
     .main-article {
-        /* 文章详情页主体采用玻璃效果 */
-        @extend .glass-effect;
+        /* 阅读面需要安静：接近不透明的背景，不用大面积模糊 */
         border-radius: 16px;
         overflow: hidden;
+        background: rgba(255, 255, 255, 0.93);
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+
+        [data-scheme="dark"] & {
+            background: rgba(38, 38, 46, 0.94);
+            border-color: rgba(255, 255, 255, 0.10);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
 
         .article-header {
             .article-image {
@@ -41,6 +49,9 @@
                 max-width: 100%;
                 height: auto;
                 border-radius: 12px;
+                /* 白底截图与卡片底色相近，描边给出边界 */
+                border: 1px solid var(--card-separator-color);
+                box-sizing: border-box;
             }
         }
 
@@ -116,6 +127,8 @@
                 content: counters(item, ".") ". ";
                 font-weight: bold;
                 margin-right: 5px;
+                /* flex 布局下编号不压缩，折行文本与首行文本左对齐 */
+                flex-shrink: 0;
             }
         }
 
@@ -124,19 +137,27 @@
         }
 
         li {
-            margin: 12px 0 12px 16px;
-            padding: 4px;
+            margin: 6px 0 6px 12px;
+            padding: 2px 4px;
 
             &>ol,
             &>ul {
-                margin-top: 10px;
+                margin-top: 8px;
                 padding-left: 10px;
-                margin-bottom: -5px;
+                margin-bottom: -4px;
 
                 &>li:last-child {
                     margin-bottom: 0;
                 }
             }
+        }
+
+        /* 悬挂缩进：编号与文本分列为 flex item，多行条目折行后与文本对齐 */
+        li>a {
+            display: flex;
+            align-items: baseline;
+            line-height: 1.55;
+            overflow-wrap: anywhere;
         }
 
         li.active-class>a {
@@ -145,7 +166,7 @@
         }
 
         ul li.active-class>a {
-            display: block;
+            display: flex;
         }
 
         @function repeat($str, $n) {
@@ -159,18 +180,21 @@
         }
 
         // Support up to 6 levels of indentation for lists in ToCs
+        // 偏移量与 li/嵌套列表的 margin、padding 联动：第 i 层锚点左缘距 #TableOfContents
+        // 内容边缘 = 16 + 26i px（ol 根部无内边距），ul 根部另有 1em(≈16px) 内边距。
+        // 负边距把 active 高亮条拉回容器左缘，padding 保持文本原位。
         @for $i from 0 to 5 {
             &>ul #{repeat("> li > ul", $i)}>li.active-class>a {
-                $n: 25 + $i * 35;
-                margin-left: calc(-#{$n}px - 1em);
-                padding-left: calc(#{$n}px + 1em - var(--heading-border-size));
+                $n: 32 + $i * 26;
+                margin-left: -#{$n}px;
+                padding-left: calc(#{$n}px - var(--heading-border-size));
             }
 
             &>ol #{repeat("> li > ol", $i)}>li.active-class>a {
-                $n: 9 + $i * 35;
-                margin-left: calc(-#{$n}px - 1em);
-                padding-left: calc(#{$n}px + 1em - var(--heading-border-size));
-                display: block;
+                $n: 16 + $i * 26;
+                margin-left: -#{$n}px;
+                padding-left: calc(#{$n}px - var(--heading-border-size));
+                display: flex;
             }
         }
     }
@@ -245,14 +269,6 @@
         a.header-anchor {
             display: none;
         }
-
-        // 不喜欢高亮效果，先删除
-        // &:hover,
-        // &:focus {
-        //     background: rgba(var(--link-background-color), var(--link-background-opacity));
-        //     border-radius: 8px;
-        //     transition: background 0.2s ease;
-        // }
     }
 
     ol,
@@ -277,6 +293,7 @@
     }
 
     figure {
+        margin: 1.5em 0;
         text-align: center;
 
         figcaption {
@@ -288,13 +305,11 @@
     blockquote {
         position: relative;
         margin: 1em 0;
-        @extend .glass-effect;
-        border-radius: 12px;
-        border: 1px solid var(--blockquote-border-color);
-        padding: 2px var(--card-padding);
-        background-color: transparent;
-        -webkit-backdrop-filter: saturate(160%) blur(var(--blockquote-blur-1));
-        backdrop-filter: saturate(160%) blur(var(--blockquote-blur-1));
+        padding: 6px 18px;
+        border-inline-start: var(--blockquote-border-size) solid var(--blockquote-border-color);
+        border-radius: 6px;
+        background: var(--blockquote-bg-1);
+        color: var(--card-text-color-main);
 
         .cite {
             display: block;
@@ -306,18 +321,242 @@
             }
         }
 
-        /* 嵌套层级：越向内层，亮色更大模糊，暗色更小模糊；并同步轻微底色变化 */
+        /* 嵌套引用：仅通过底色深浅区分层级 */
         &>blockquote {
             background: var(--blockquote-bg-2);
-            -webkit-backdrop-filter: saturate(160%) blur(var(--blockquote-blur-2));
-            backdrop-filter: saturate(160%) blur(var(--blockquote-blur-2));
 
             &>blockquote {
                 background: var(--blockquote-bg-3);
-                -webkit-backdrop-filter: saturate(160%) blur(var(--blockquote-blur-3));
-                backdrop-filter: saturate(160%) blur(var(--blockquote-blur-3));
             }
         }
+    }
+
+    /* GFM Alerts（[!NOTE] [!TIP] 等）：彩色左边条 + 同色系淡底 + 图标标题 */
+    blockquote.alert,
+    details.alert {
+        margin: 1em 0;
+        border-inline-start: var(--blockquote-border-size) solid var(--alert-color, var(--accent-color));
+        border-radius: 6px;
+        background: color-mix(in srgb, var(--alert-color, var(--accent-color)) 8%, transparent);
+        padding: 10px 18px;
+
+        .alert-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0.25em 0;
+            font-weight: 600;
+            color: var(--alert-color, var(--accent-color));
+
+            svg {
+                width: 1.1em;
+                height: 1.1em;
+                flex-shrink: 0;
+            }
+        }
+
+        &>p:last-child {
+            margin-bottom: 0.25em;
+        }
+
+        &.alert-note {
+            --alert-color: #1b6dd1;
+        }
+
+        &.alert-tip {
+            --alert-color: #1a7f37;
+        }
+
+        &.alert-important {
+            --alert-color: #8250df;
+        }
+
+        &.alert-warning {
+            --alert-color: #9a6700;
+        }
+
+        &.alert-caution {
+            --alert-color: #d1242f;
+        }
+
+        [data-scheme="dark"] & {
+            background: color-mix(in srgb, var(--alert-color, var(--accent-color)) 14%, transparent);
+
+            &.alert-note {
+                --alert-color: #4493f8;
+            }
+
+            &.alert-tip {
+                --alert-color: #3fb950;
+            }
+
+            &.alert-important {
+                --alert-color: #ab7df8;
+            }
+
+            &.alert-warning {
+                --alert-color: #d29922;
+            }
+
+            &.alert-caution {
+                --alert-color: #f85149;
+            }
+        }
+    }
+
+    /* 折叠 alert（[!TYPE]+ 默认展开 / [!TYPE]- 默认收起） */
+    details.alert {
+        summary.alert-title {
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &::marker {
+                content: "";
+            }
+
+            .alert-fold-icon {
+                margin-left: auto;
+                transition: transform 0.25s ease;
+            }
+        }
+
+        &[open] .alert-fold-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 展开时内容轻微淡入下滑；收起保持即时 */
+        &[open] .alert-body {
+            animation: alert-reveal 0.25s ease;
+        }
+
+        @keyframes alert-reveal {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    /* alert 自定义颜色：块属性 {.alert-blue} 等预设色，
+       或 {style="--alert-color: #..."} 指定任意颜色（亮暗模式各自适配）。
+       选择器与类型色同级且靠后，确保覆盖类型默认色 */
+    blockquote.alert,
+    details.alert {
+        &.alert-blue {
+            --alert-color: #1b6dd1;
+        }
+
+        &.alert-green {
+            --alert-color: #1a7f37;
+        }
+
+        &.alert-purple {
+            --alert-color: #8250df;
+        }
+
+        &.alert-orange {
+            --alert-color: #9a6700;
+        }
+
+        &.alert-red {
+            --alert-color: #d1242f;
+        }
+
+        &.alert-gray {
+            --alert-color: #59636e;
+        }
+
+        [data-scheme="dark"] & {
+            &.alert-blue {
+                --alert-color: #4493f8;
+            }
+
+            &.alert-green {
+                --alert-color: #3fb950;
+            }
+
+            &.alert-purple {
+                --alert-color: #ab7df8;
+            }
+
+            &.alert-orange {
+                --alert-color: #d29922;
+            }
+
+            &.alert-red {
+                --alert-color: #f85149;
+            }
+
+            &.alert-gray {
+                --alert-color: #9198a1;
+            }
+        }
+    }
+
+    /* 任务列表（taskList 扩展）：自定义复选框，去掉原生圆点 */
+    li:has(> input[type="checkbox"]:first-child) {
+        list-style: none;
+    }
+
+    input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 1em;
+        height: 1em;
+        margin: 0 0.4em 0 0;
+        vertical-align: -0.12em;
+        border: 1.5px solid var(--card-text-color-tertiary);
+        border-radius: 4px;
+        background: transparent;
+
+        &:checked {
+            background: var(--link-color);
+            border-color: var(--link-color);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 0.8em;
+        }
+    }
+
+    /* 定义列表（definitionList 扩展） */
+    dl {
+        margin: 0.75em 0;
+    }
+
+    dt {
+        font-weight: 600;
+        color: var(--card-text-color-main);
+        margin-top: 0.6em;
+    }
+
+    dd {
+        margin-inline-start: 0.6em;
+        padding-inline-start: 0.8em;
+        border-inline-start: 2px solid var(--card-separator-color);
+        color: var(--card-text-color-secondary);
+    }
+
+    /* 标记与删除线：跟随主题色 */
+    mark {
+        background: color-mix(in srgb, var(--accent-color) 22%, transparent);
+        color: inherit;
+        padding: 0.1em 0.25em;
+        border-radius: 4px;
+    }
+
+    del {
+        color: var(--card-text-color-tertiary);
     }
 
     hr {
@@ -332,14 +571,21 @@
     code {
         color: var(--code-text-color);
         background-color: var(--code-background-color);
+        border: 1px solid var(--code-border-color);
         padding: 2px 4px;
         border-radius: var(--tag-border-radius);
         font-family: var(--code-font-family);
     }
 
+    /* 正文链接 hover 时保持链接色，不褪成普通文字色 */
+    a.link:hover {
+        color: var(--link-color);
+    }
+
     a,
     code {
-        word-break: break-word;
+        /* 仅在溢出时断词，避免窄列中标识符被任意拆碎 */
+        overflow-wrap: break-word;
     }
 
     .gallery {
@@ -385,9 +631,9 @@
         /* 更紧凑的内边距 */
         padding: calc(var(--card-padding) - 8px);
         position: relative;
-        /* 左右留出小边距，避免贯穿容器 */
-        margin-left: 6px;
-        margin-right: 6px;
+        /* 与正文列对齐 */
+        margin-left: 0;
+        margin-right: 0;
         /* 外层容器负责边框；如果需要极简，可弱化为半透明 */
         border: 1px solid var(--code-block-border-color);
         border-radius: 10px;
@@ -442,24 +688,26 @@
         transition: opacity 0.3s ease;
     }
 
+    /* 边框、圆角与横向滚动统一由 wrapper 承担；表格居中且有最小宽度，
+       短表格不空旷、长表格自然铺满、超宽由 wrapper 滚动 */
     .table-wrapper {
-        padding: 0 var(--card-padding);
-        overflow-x: auto;
+        margin: 0.75em auto;
+        padding: 0;
         display: block;
+        width: fit-content;
+        min-width: 50%;
+        max-width: 100%;
+        overflow-x: auto;
         background: transparent;
+        border: 1px solid var(--table-border-color);
+        border-radius: 12px;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 0.75em;
-        margin-bottom: 0.75em;
+        margin: 0;
         font-size: 0.96em;
-        border: 1px solid var(--table-border-color);
-        box-shadow: 0px 0px 0px 1px var(--table-border-color);
-        overflow: hidden;
-        border-radius: 12px;
-
     }
 
     thead th {
@@ -469,9 +717,21 @@
 
     th,
     td {
-        text-align: left;
-        padding: 8px 12px;
-        border: 1px solid var(--table-border-color);
+        /* 默认居中；markdown 中的列对齐（:--/:--:/--:）以 inline style 输出，优先级更高 */
+        text-align: center;
+        padding: 10px 14px;
+        border: none;
+        border-bottom: 1px solid var(--table-border-color);
+        border-right: 1px solid var(--table-border-color);
+    }
+
+    th:last-child,
+    td:last-child {
+        border-right: none;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
     }
 
     td {
@@ -484,7 +744,8 @@
 
     /* 表格内链接的悬停背景（毛玻璃主题软高亮） */
     table a {
-        color: var(--accent-color);
+        color: var(--link-color);
+        box-shadow: none;
         border-radius: var(--tag-border-radius);
         padding: 1px 3px;
         background: rgba(var(--link-background-color), var(--link-background-opacity));
@@ -516,6 +777,8 @@
             border: none;
             padding: 0;
             background: transparent;
+            /* 代码行号表保持左对齐，不继承正文表格的居中 */
+            text-align: left;
         }
 
         /* 嵌套引用在代码块/blockquote内部的“下凹”效果：轻微内阴影 */
@@ -537,8 +800,9 @@
         min-width: 1.25em;
         text-align: center;
         border-radius: 4px;
+        box-shadow: none;
         background: rgba(var(--link-background-color), var(--link-background-opacity));
-        color: var(--accent-color);
+        color: var(--link-color);
         text-decoration: none;
         line-height: 1;
         padding: 0 2px;
@@ -566,7 +830,8 @@
         .footnote-backref {
             margin-left: 6px;
             text-decoration: none;
-            color: var(--accent-color);
+            color: var(--link-color);
+            box-shadow: none;
             background: rgba(var(--link-background-color), var(--link-background-opacity));
             border-radius: 3px;
             padding: 0 4px;
@@ -606,19 +871,10 @@
         .file-holder.snippet-file-content {
             margin-block-end: 0 !important;
             margin-block-start: 0 !important;
-            margin-left: calc((var(--card-padding)) * -1) !important;
-            margin-right: calc((var(--card-padding)) * -1) !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
             padding: 0 var(--card-padding) !important;
         }
-    }
-
-    /// Negative margins
-    figure,
-    .gallery,
-    .table-wrapper {
-        margin-left: calc((var(--card-padding)) * -1);
-        margin-right: calc((var(--card-padding)) * -1);
-        width: calc(100% + var(--card-padding) * 2);
     }
 
     /// Make long KaTeX equations scrollable in the x-axis

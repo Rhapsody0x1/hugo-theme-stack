@@ -36,6 +36,25 @@ article:
     wordCount:
         other: "{{.Count}} words"
 
+    tocToggleHint:
+        other: "Click the card to pin / auto-hide the table of contents"
+
+alert:
+    note:
+        other: Note
+
+    tip:
+        other: Tip
+
+    important:
+        other: Important
+
+    warning:
+        other: Warning
+
+    caution:
+        other: Caution
+
 notFound:
     title:
         other: Not Found
@@ -74,3 +93,13 @@ footer:
 
     designedBy:
         other: Theme {{ .Theme }} designed by {{ .DesignedBy }}
+
+menu:
+    home:
+        other: Home
+    archives:
+        other: Archives
+    links:
+        other: Links
+    search:
+        other: Search

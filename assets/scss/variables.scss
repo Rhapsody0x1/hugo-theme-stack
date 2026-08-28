@@ -107,19 +107,15 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
 :root {
     --blockquote-border-size: 4px;
     /* 基于主题色的低饱和度配色（逐级加深/变浅） */
-    --blockquote-background-color: color-mix(in srgb, var(--accent-color) 6%, var(--card-background));
-    --blockquote-border-color: color-mix(in srgb, var(--accent-color) 22%, transparent);
+    --blockquote-border-color: color-mix(in srgb, var(--accent-color) 40%, transparent);
     /* 嵌套层级 1/2/3（亮色：向内逐渐加深） */
     --blockquote-bg-1: color-mix(in srgb, var(--accent-color) 6%, var(--card-background));
     --blockquote-bg-2: color-mix(in srgb, var(--accent-color) 10%, var(--card-background));
     --blockquote-bg-3: color-mix(in srgb, var(--accent-color) 14%, var(--card-background));
-    /* 引用框毛玻璃模糊半径（亮色：越内层越大） */
-    --blockquote-blur-1: 6px;
-    --blockquote-blur-2: 9px;
-    --blockquote-blur-3: 12px;
 
     --heading-border-size: 4px;
 
+    --link-color: #1b6dd1;
     --link-background-color: 189, 195, 199;
     --link-background-opacity: 0.5;
     --link-background-opacity-hover: 0.7;
@@ -127,10 +123,11 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
     --pre-background-color: #272822;
     --pre-text-color: #f8f8f2;
 
-    --code-background-color: rgba(0, 0, 0, 0.08);
-    --code-text-color: #555;
+    --code-background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    --code-text-color: var(--accent-color);
+    --code-border-color: color-mix(in srgb, var(--accent-color) 20%, transparent);
 
-    --table-border-color: rgba(64, 118, 193, 0.35);
+    --table-border-color: color-mix(in srgb, var(--card-text-color-main) 14%, transparent);
     --tr-even-background-color: transparent;
     /* 表头背景低对比纯色（亮） */
     --table-head-background-color: rgba(0, 0, 0, 0.04);
@@ -140,26 +137,25 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
     --code-block-border-color: color-mix(in srgb, var(--accent-color) 18%, transparent);
 
     &[data-scheme="dark"] {
-        --code-background-color: #272822;
-        --code-text-color: rgba(255, 255, 255, 0.9);
+        /* 行内代码：中性文字 + 深底 chip，与蓝色链接区分 */
+        --code-background-color: rgba(255, 255, 255, 0.10);
+        --code-text-color: var(--card-text-color-main);
+        --code-border-color: rgba(255, 255, 255, 0.16);
 
-        --table-border-color: rgba(255, 255, 255, 0.22);
+        --link-color: #8ab4f8;
+
+        --table-border-color: color-mix(in srgb, var(--card-text-color-main) 22%, transparent);
         --tr-even-background-color: transparent;
         /* 表头背景低对比纯色（暗） */
         --table-head-background-color: rgba(255, 255, 255, 0.06);
 
         /* 暗色下的低饱和度主题色系（向内逐渐变浅） */
-        --blockquote-background-color: color-mix(in srgb, var(--accent-color) 12%, var(--card-background));
-        --blockquote-border-color: color-mix(in srgb, var(--accent-color) 28%, transparent);
+        --blockquote-border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
         --blockquote-bg-1: color-mix(in srgb, var(--accent-color) 12%, var(--card-background));
         --blockquote-bg-2: color-mix(in srgb, var(--accent-color) 16%, var(--card-background));
         --blockquote-bg-3: color-mix(in srgb, var(--accent-color) 20%, var(--card-background));
         /* 代码块边框颜色（暗色模式） */
         --code-block-border-color: color-mix(in srgb, var(--accent-color) 24%, transparent);
-        /* 暗色：越内层越小，形成下凹层级 */
-        --blockquote-blur-1: 10px;
-        --blockquote-blur-2: 7px;
-        --blockquote-blur-3: 4px;
     }
 }
 
@@ -191,4 +187,7 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
     --menu-icon-separation: 40px;
     --container-padding: 15px;
     --widget-separation: var(--section-separation);
+
+    /* 全站统一的 hover 浮动幅度：仅用于整体可点的卡片/元素 */
+    --hover-lift: -3px;
 }

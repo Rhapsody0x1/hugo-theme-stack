@@ -1,0 +1,41 @@
+{{- /* GitHub Flavored Markdown alerts ([!NOTE] [!TIP] [!IMPORTANT] [!WARNING] [!CAUTION])
+       支持 Obsidian 扩展语法：[!TYPE]+ 默认展开折叠 / [!TYPE]- 默认收起 / [!TYPE] 自定义标题 */ -}}
+{{- $icons := dict
+    "note" `<circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/>`
+    "tip" `<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4.6 12.3c.8.8 1.3 1.8 1.5 2.7h6.2c.2-.9.7-1.9 1.5-2.7A7 7 0 0 0 12 2Z"/>`
+    "important" `<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 8v5"/><path d="M12 16.5h.01"/>`
+    "warning" `<path d="M10.3 4.1 1.8 18.7a1.4 1.4 0 0 0 1.2 2.1h18a1.4 1.4 0 0 0 1.2-2.1L13.7 4.1a1.45 1.45 0 0 0-2.4 0Z"/><path d="M12 9v4.5"/><path d="M12 17h.01"/>`
+    "caution" `<path d="M8.2 3h7.6L21 8.2v7.6L15.8 21H8.2L3 15.8V8.2L8.2 3Z"/><path d="M12 8v5"/><path d="M12 16.5h.01"/>`
+-}}
+{{- $icon := index $icons .AlertType -}}
+{{- $label := or (T (printf "alert.%s" .AlertType)) (title .AlertType) -}}
+{{- with .AlertTitle }}{{ $label = . }}{{ end -}}
+{{- if or (eq .AlertSign "+") (eq .AlertSign "-") -}}
+<details class="alert alert-{{ .AlertType }}{{ with .Attributes.class }} {{ . }}{{ end }}"
+    {{- range $k, $v := .Attributes }}{{ if ne $k "class" }} {{ $k | safeHTMLAttr }}="{{ $v }}"{{ end }}{{ end }}{{ if eq .AlertSign "+" }} open{{ end }}>
+    <summary class="alert-title">
+        {{ with $icon }}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{{ . | safeHTML }}</svg>
+        {{ end }}
+        <span>{{ $label }}</span>
+        <svg class="alert-fold-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" />
+        </svg>
+    </summary>
+    <div class="alert-body">{{ .Text }}</div>
+</details>
+{{- else -}}
+<blockquote class="alert alert-{{ .AlertType }}{{ with .Attributes.class }} {{ . }}{{ end }}"
+    {{- range $k, $v := .Attributes }}{{ if ne $k "class" }} {{ $k | safeHTMLAttr }}="{{ $v }}"{{ end }}{{ end }}>
+    <p class="alert-title">
+        {{ with $icon }}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{{ . | safeHTML }}</svg>
+        {{ end }}
+        <span>{{ $label }}</span>
+    </p>
+    {{ .Text }}
+</blockquote>
+{{- end -}}

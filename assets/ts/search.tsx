@@ -213,7 +213,13 @@ class Search {
         if (!this.data) {
             /// Not fetched yet
             const jsonURL = this.form.dataset.json;
-            this.data = await fetch(jsonURL).then(res => res.json());
+            this.data = await fetch(jsonURL)
+                .then(res => res.json())
+                .catch(err => {
+                    /// Network/parse failure (e.g. cross-origin or offline): fall back to empty data
+                    console.error('Failed to load search data', err);
+                    return [];
+                });
             const parser = new DOMParser();
 
             for (const item of this.data) {

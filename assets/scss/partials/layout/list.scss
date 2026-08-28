@@ -59,6 +59,20 @@
             flex-shrink: 1;
             box-shadow: none;
             /* 修复顶部区域不正确的阴影 */
+            transition: transform .25s ease, box-shadow .25s ease;
+
+            /* 链接撑满整个卡片，保证整卡可点 */
+            &>a {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            /* 与文章卡片一致的轻微 hover 反馈 */
+            &:hover {
+                transform: translateY(var(--hover-lift));
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            }
 
             /* 无图分类卡片：高度自适应并采用玻璃效果 */
             &.no-image {

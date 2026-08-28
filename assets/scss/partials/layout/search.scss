@@ -45,15 +45,16 @@
         border: 0;
         appearance: none;
         -webkit-appearance: none;
-        transition: box-shadow 0.3s ease;
+        transition: border-color 0.25s ease, outline-color 0.25s ease;
         font-size: 1.6rem;
         height: 44px;
         display: inline-flex;
         align-items: center;
 
         &:focus {
-            outline: 0;
-            box-shadow: var(--shadow-l2);
+            /* outline 不与玻璃 box-shadow 冲突，聚焦时给出 accent 色轮廓环 */
+            outline: 2px solid color-mix(in srgb, var(--accent-color) 45%, transparent);
+            outline-offset: 2px;
         }
     }
 
@@ -121,4 +122,18 @@
             grid-column: 1 / -1;
         }
     }
+}
+
+/* 搜索结果关键字高亮：跟随主题色，替换浏览器默认黄 */
+.search-result mark {
+    background: color-mix(in srgb, var(--accent-color) 22%, transparent);
+    color: inherit;
+    padding: 0.1em 0.25em;
+    border-radius: 4px;
+}
+
+/* 搜索输入框悬停提示：边框染 accent 色；
+   优先级需高于 glass-effect 的 html[data-scheme] .search-form input 规则 */
+html[data-scheme] .search-form input:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
 }

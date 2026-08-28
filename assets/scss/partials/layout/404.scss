@@ -1,6 +1,6 @@
 .not-found-card {
-    background-color: var(--card-background);
-    box-shadow: var(--shadow-l1);
-    border-radius: var(--card-border-radius);
+    /* 与全站一致的玻璃卡片 */
+    @extend .glass-effect;
+    border-radius: 16px;
     padding: var(--card-padding);
 }
