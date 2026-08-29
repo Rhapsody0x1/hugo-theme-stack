@@ -1,0 +1,39 @@
+/* 回到顶部按钮：玻璃拟态悬浮按钮，滚动超过阈值后淡入；
+   玻璃背景/边框/阴影由 .glass-effect 类提供，深浅色自动适配 */
+.back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 20;
+
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--card-text-color-main);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+
+        &:hover {
+            transform: translateY(var(--hover-lift));
+        }
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}

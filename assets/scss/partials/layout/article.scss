@@ -108,7 +108,8 @@
         background-color: var(--card-separator-color);
     }
 
-    #TableOfContents {
+    #TableOfContents,
+    #TableOfContents-mobile {
         overflow-x: auto;
         max-height: 75vh;
 
@@ -197,6 +198,61 @@
                 display: flex;
             }
         }
+    }
+}
+
+/* 移动端（<md）文章页顶部可折叠目录卡片：复用 .widget--toc 玻璃卡片与 TOC 列表样式；
+   桌面端由右侧栏 TOC 承担，故隐藏 */
+.widget--toc.toc-mobile-card {
+    display: none;
+}
+
+@media (max-width: map-get($breakpoints, md) - 0.02px) {
+    .widget--toc.toc-mobile-card {
+        display: flex;
+        margin: var(--card-padding) var(--card-padding) 0;
+    }
+
+    .toc-mobile-card--summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 15px var(--card-padding);
+        cursor: pointer;
+        list-style: none;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--card-text-color-main);
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        .toc-mobile-card--title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .toc-mobile-card--chevron {
+            transition: transform 0.2s ease;
+        }
+    }
+
+    .toc-mobile-card[open] .toc-mobile-card--chevron {
+        transform: rotate(180deg);
+    }
+
+    .toc-mobile-card #TableOfContents-mobile {
+        max-height: 50vh;
+        padding-bottom: 10px;
     }
 }
 

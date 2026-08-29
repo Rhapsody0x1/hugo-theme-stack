@@ -1,0 +1,17 @@
+{{/* 移动端（<md）文章页顶部可折叠目录卡片：与右侧栏 TOC 同条件显示，
+    但使用独立 id，避免与 scrollspy/tocToggle 锁定的 #TableOfContents 冲突 */}}
+{{- if .Scratch.Get "TOCEnabled" -}}
+<details class="widget--toc toc-mobile-card">
+    <summary class="toc-mobile-card--summary">
+        <span class="toc-mobile-card--title">
+            {{ partial "helper/icon" "hash" }}
+            <span>{{ T "article.tableOfContents" }}</span>
+        </span>
+        <svg class="toc-mobile-card--chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+        </svg>
+    </summary>
+    {{ replace .TableOfContents `id="TableOfContents"` `id="TableOfContents-mobile"` | safeHTML }}
+</details>
+{{- end -}}

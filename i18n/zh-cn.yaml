@@ -4,6 +4,9 @@ toggleMenu:
 darkMode:
     other: 深色模式
 
+backToTop:
+    other: 回到顶部
+
 list:
     page: "{{ .Count }} 个页面"
 
