@@ -192,6 +192,7 @@
             stroke-width: 1.33;
             width: 20px;
             height: 20px;
+            transition: stroke-width .2s ease;
         }
 
         a {
@@ -200,16 +201,40 @@
             align-items: center;
             color: var(--body-text-color);
             gap: var(--menu-icon-separation);
+            transition: color .2s ease;
         }
 
         span {
             flex: 1;
         }
 
-        &.current {
-            a {
-                color: var(--accent-color);
-                font-weight: bold;
+        /* 选中与 hover 都是描边，hover 比选中略重一档 */
+        &.current a,
+        a:hover {
+            color: var(--accent-color);
+
+            span {
+                paint-order: stroke fill;
+            }
+        }
+
+        &.current a {
+            span {
+                -webkit-text-stroke: 0.5px var(--accent-color);
+            }
+
+            svg {
+                stroke-width: 2;
+            }
+        }
+
+        a:hover {
+            span {
+                -webkit-text-stroke: 0.7px var(--accent-color);
+            }
+
+            svg {
+                stroke-width: 2.4;
             }
         }
 
@@ -250,10 +275,24 @@
     flex-direction: row;
     gap: 10px;
 
+    a {
+        color: var(--body-text-color);
+        transition: color .2s ease;
+
+        &:hover {
+            color: var(--accent-color);
+
+            svg {
+                stroke-width: 2;
+            }
+        }
+    }
+
     svg {
         width: 24px;
         height: 24px;
-        stroke: var(--body-text-color);
+        stroke: currentColor;
         stroke-width: 1.33;
+        transition: stroke-width .2s ease;
     }
 }

@@ -35,6 +35,25 @@
                 padding: var(--card-padding);
                 padding-bottom: 0;
             }
+
+            /* 文章页标题需明显大于正文 h2（约 1.5em ≈ 25.5px），否则层级倒置 */
+            .article-title {
+                font-size: 2.8rem;
+                font-weight: 700;
+                line-height: 1.25;
+
+                @include respond(md) {
+                    font-size: 3.2rem;
+                }
+
+                @include respond(xl) {
+                    font-size: 3.6rem;
+                }
+            }
+
+            .article-title-wrapper {
+                gap: 10px;
+            }
         }
 
         .article-content {
@@ -371,6 +390,8 @@
             display: block;
             text-align: right;
             font-size: 0.75em;
+            /* Lato 无 CJK 破折号（U+2014），先走中文字体避免回退成两个短横 */
+            font-family: var(--zh-font-family), var(--base-font-family);
 
             a {
                 text-decoration: underline;

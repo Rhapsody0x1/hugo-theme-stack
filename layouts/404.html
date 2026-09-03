@@ -35,8 +35,9 @@
         <script>
             const wrongUrl = new URL(window.location.href);
 
-            /// Get the search keyword from the wrong URL by removing all slashes and dashes
-            const searchKeyword = wrongUrl.pathname.split(/[/|-]/).join(' ').trim();
+            /// Get the search keyword from the wrong URL by removing all slashes and dashes;
+            /// drop one-letter tokens such as the "p" section prefix so they don't get highlighted
+            const searchKeyword = wrongUrl.pathname.split(/[/|-]/).filter(t => t.length > 1).join(' ').trim();
 
             document.getElementById('searchInput').setAttribute('value', searchKeyword);
         </script>

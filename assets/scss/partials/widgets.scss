@@ -37,6 +37,11 @@
             [data-scheme="dark"] & {
                 background: rgba(255, 255, 255, 0.08);
                 border-color: rgba(255, 255, 255, 0.10);
+
+                /* 黑底上阴影不可见，改用提亮底色反馈 */
+                &:hover {
+                    background: rgba(255, 255, 255, 0.14);
+                }
             }
         }
     }
@@ -75,6 +80,11 @@
             [data-scheme="dark"] & {
                 background: rgba(255, 255, 255, 0.08);
                 border-color: rgba(255, 255, 255, 0.10);
+
+                /* 黑底上阴影不可见，改用提亮底色反馈 */
+                &:hover {
+                    background: rgba(255, 255, 255, 0.14);
+                }
             }
 
             span.year {
@@ -165,6 +175,10 @@ body.article-page .right-sidebar {
         opacity 0.35s ease,
         max-width 0.4s ease,
         padding 0.4s ease;
+}
+
+/* 仅在自动显隐模式下提示合成层，锁定状态不常驻 will-change */
+body.article-page.toc-auto .right-sidebar {
     will-change: transform, opacity;
 }
 

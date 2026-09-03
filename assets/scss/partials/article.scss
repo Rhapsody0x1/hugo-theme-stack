@@ -13,7 +13,7 @@
         /* 应用液态玻璃效果；仅悬停在封面/标题链接上时轻微上浮，精确表达可点区域 */
         @extend .glass-effect;
         border: none;
-        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        transition: transform .25s ease;
 
         &:has(.article-image a:hover, .article-title a:hover) {
             transform: translateY(var(--hover-lift));
@@ -31,15 +31,6 @@
 
                 @include respond(xl) {
                     height: 250px;
-                }
-            }
-        }
-
-        @for $i from 1 through length($defaultTagBackgrounds) {
-            &:nth-child(#{length($defaultTagBackgrounds)}n + #{$i}) {
-                .article-category a {
-                    background: nth($defaultTagBackgrounds, $i);
-                    color: nth($defaultTagColors, $i);
                 }
             }
         }
@@ -135,18 +126,22 @@
     gap: 10px;
     flex-wrap: wrap;
 
+    /* 主题色淡底 chip：全站统一，不再按 nth-child 轮换彩色 */
     a {
-        color: var(--accent-color-text);
-        background-color: var(--accent-color);
-        padding: 8px 16px;
-        border-radius: var(--tag-border-radius);
+        color: var(--accent-color);
+        background-color: var(--chip-background);
+        border: 1px solid var(--chip-border-color);
+        padding: 6px 14px;
+        border-radius: 8px;
         display: inline-block;
         font-size: 1.4rem;
-        transition: background-color 0.5s ease;
+        font-weight: 500;
+        transition: background-color .2s ease, border-color .2s ease;
 
         &:hover {
-            color: var(--accent-color-text);
-            background-color: var(--accent-color-darker);
+            color: var(--accent-color);
+            background-color: var(--chip-background-hover);
+            border-color: var(--chip-border-color-hover);
         }
     }
 }
@@ -231,11 +226,12 @@
         height: 350px;
         width: 250px;
         box-shadow: var(--shadow-l1);
-        transition: box-shadow 0.3s ease;
+        transition: box-shadow 0.3s ease, transform .25s ease;
         background-color: var(--card-background);
 
         &:hover {
             box-shadow: var(--shadow-l2);
+            transform: translateY(var(--hover-lift));
         }
 
         &.has-image {

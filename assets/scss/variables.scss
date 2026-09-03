@@ -20,6 +20,12 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
 
     --tag-border-radius: 4px;
 
+    /* 分类/标签 chip：主题色淡底，hover 加深 */
+    --chip-background: color-mix(in srgb, var(--accent-color) 18%, transparent);
+    --chip-background-hover: color-mix(in srgb, var(--accent-color) 28%, transparent);
+    --chip-border-color: color-mix(in srgb, var(--accent-color) 12%, transparent);
+    --chip-border-color-hover: color-mix(in srgb, var(--accent-color) 30%, transparent);
+
     --section-separation: 40px;
 
     --scrollbar-thumb: hsl(0, 0%, 85%);
@@ -31,6 +37,10 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
         --accent-color-darker: #bdc3c7;
         --accent-color-text: #000;
         --body-text-color: rgba(255, 255, 255, 0.7);
+        --chip-background: rgba(160, 185, 230, 0.18);
+        --chip-background-hover: rgba(160, 185, 230, 0.30);
+        --chip-border-color: rgba(160, 185, 230, 0.12);
+        --chip-border-color-hover: rgba(160, 185, 230, 0.35);
         --scrollbar-thumb: hsl(0, 0%, 40%);
         --scrollbar-track: var(--body-background);
     }
@@ -179,7 +189,8 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
 
 [data-scheme="dark"] {
     --pre-text-color: #f8f8f2;
-    --pre-background-color: #272822;
+    /* 暗色卡片为冷色 #26262e，代码块用同色系略深的底，而非 monokai 的橄榄灰 */
+    --pre-background-color: #1e1e27;
     @import "partials/highlight/dark.scss";
 }
 

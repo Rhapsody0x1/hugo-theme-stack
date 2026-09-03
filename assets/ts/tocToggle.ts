@@ -92,9 +92,13 @@ export function setupTocToggle(): void {
     document.body.classList.remove('toc-hidden');
     document.body.classList.remove('toc-auto');
 
-    // When leaving window on the right, keep hidden if unlocked
-    window.addEventListener('mouseleave', () => {
+    // 鼠标离开页面时收起（mouseleave 不会在 window 上触发，要挂在 documentElement）
+    document.documentElement.addEventListener('mouseleave', () => {
         if (isLocked) return;
+        if (hideTimer) {
+            window.clearTimeout(hideTimer);
+            hideTimer = null;
+        }
         tocSection.classList.remove('anim-in');
         tocSection.classList.add('anim-out');
         rightSidebar.classList.remove('reveal');

@@ -72,3 +72,40 @@ html[data-scheme="dark"] {
         @include glass-effect-dark;
     }
 }
+/* 评论区容器与全站玻璃卡片一致（原先在站点 custom.scss 里重复声明） */
+.giscus {
+    @extend .glass-effect;
+    padding: 12px;
+}
+
+/* 小屏：玻璃效果几乎不可辨，去掉模糊换取滚动流畅；提高底色不透明度保证可读 */
+@media (max-width: map-get($breakpoints, md) - 0.02px) {
+    .glass-effect {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+
+    html[data-scheme="light"] .glass-effect {
+        background: rgba(255, 255, 255, 0.82);
+    }
+
+    html[data-scheme="dark"] .glass-effect {
+        background: rgba(40, 40, 48, 0.88);
+    }
+}
+
+/* 尊重系统"减少动态效果"设置：去掉位移与过渡，保留状态变化本身 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    :root {
+        --hover-lift: 0px;
+    }
+}
