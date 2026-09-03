@@ -13,14 +13,14 @@
         transition: background-color 0.2s ease, color 0.2s ease;
 
         &:hover {
-            background-color: var(--card-background-selected);
-            color: var(--card-text-color-main);
+            background-color: var(--chip-background-hover);
+            color: var(--accent-color);
         }
 
         &.current {
             font-weight: bold;
-            background-color: var(--card-background-selected);
-            color: var(--card-text-color-main);
+            background-color: var(--chip-background);
+            color: var(--accent-color);
         }
     }
 }
