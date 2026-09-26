@@ -265,13 +265,24 @@
         }
     }
 
-    .toc-mobile-card[open] .toc-mobile-card--chevron {
+    /* 收起动画期间 open 仍在，用 .is-closing 让箭头提前转回 */
+    .toc-mobile-card[open]:not(.is-closing) .toc-mobile-card--chevron {
         transform: rotate(180deg);
     }
 
     .toc-mobile-card #TableOfContents-mobile {
         max-height: 50vh;
         padding-bottom: 10px;
+    }
+
+    /* 展开时列表随高度动画淡入；高度本身由 tocMobile.ts 用 Web Animations 过渡 */
+    .toc-mobile-card.is-opening #TableOfContents-mobile {
+        animation: toc-mobile-reveal 0.26s ease both;
+    }
+
+    @keyframes toc-mobile-reveal {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 }
 
@@ -293,11 +304,15 @@
         height: 150px;
         border-radius: 12px !important;
         border: 1px solid rgba(0, 0, 0, 0.08) !important;
-        transition: none !important;
+        @include glass-hover-transition;
 
         [data-scheme="dark"] & {
             border-color: rgba(255, 255, 255, 0.12) !important;
             box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.10), 0 0 20px rgba(120, 140, 200, 0.12) !important;
+        }
+
+        &:hover {
+            border-color: var(--glass-border-color-hover) !important;
         }
 
         .article-image img {
@@ -312,7 +327,25 @@
         &.has-image {
             .article-details {
                 padding: 20px;
-                background: linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.75) 100%) !important;
+                background: transparent !important;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                    background: linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.75) 100%);
+                    transition: opacity 0.25s ease;
+                }
+
+                &> * {
+                    position: relative;
+                    z-index: 1;
+                }
+            }
+
+            &:hover .article-details::before {
+                opacity: 0.15;
             }
         }
     }
@@ -872,7 +905,8 @@
     }
 
     /* 脚注引用与列表的小样式 */
-    sup.footnote-ref a {
+    /* Goldmark 把 class 放在 a 上而非 sup 上 */
+    sup a.footnote-ref {
         display: inline-block;
         min-width: 1.25em;
         text-align: center;
@@ -883,12 +917,11 @@
         text-decoration: none;
         line-height: 1;
         padding: 0 2px;
-        transition: background 0.2s ease, transform 0.12s ease;
+        transition: background 0.2s ease;
     }
 
-    sup.footnote-ref a:hover {
+    sup a.footnote-ref:hover {
         background: rgba(var(--link-background-color), var(--link-background-opacity-hover));
-        transform: translateY(-1px);
     }
 
     .footnotes {
@@ -912,6 +945,7 @@
             background: rgba(var(--link-background-color), var(--link-background-opacity));
             border-radius: 3px;
             padding: 0 4px;
+            transition: background 0.2s ease;
         }
 
         .footnote-backref:hover {

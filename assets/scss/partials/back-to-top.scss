@@ -20,15 +20,18 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s,
+        border-color .2s ease, background-color .2s ease, color .2s ease;
 
     &.visible {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
 
+        /* hover 高亮：边框染色 + 箭头变主题色，按钮小，单靠边框不够醒目 */
         &:hover {
-            transform: translateY(var(--hover-lift));
+            @include glass-hover-state;
+            color: var(--accent-color);
         }
     }
 

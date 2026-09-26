@@ -14,6 +14,7 @@ import { setupScrollspy } from 'ts/scrollspy';
 import { setupSmoothAnchors } from "ts/smoothAnchors";
 import { setupTocToggle } from 'ts/tocToggle';
 import { setupBackToTop } from 'ts/backToTop';
+import { setupTocMobile } from 'ts/tocMobile';
 
 let Stack = {
     init: () => {
@@ -31,6 +32,9 @@ let Stack = {
 
         // Initialize ToC toggle/lock behavior on pages that have right sidebar
         setupTocToggle();
+
+        // 移动端目录卡片展开/收起动画
+        setupTocMobile();
 
         // Back-to-top button (exists on every page via baseof)
         setupBackToTop();

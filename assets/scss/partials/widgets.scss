@@ -27,20 +27,21 @@
             background: rgba(255, 255, 255, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.40);
             box-shadow: var(--shadow-l1);
-            transition: transform .25s ease, box-shadow .25s ease;
+            @include glass-hover-transition;
 
+            /* hover 高亮：底色提亮 + 边框染主题色，与卡片一致 */
             &:hover {
-                transform: translateY(var(--hover-lift));
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                background: var(--glass-chip-fill-hover);
+                border-color: var(--glass-border-color-hover);
             }
 
             [data-scheme="dark"] & {
                 background: rgba(255, 255, 255, 0.08);
                 border-color: rgba(255, 255, 255, 0.10);
 
-                /* 黑底上阴影不可见，改用提亮底色反馈 */
                 &:hover {
-                    background: rgba(255, 255, 255, 0.14);
+                    background: var(--glass-chip-fill-hover);
+                    border-color: var(--glass-border-color-hover);
                 }
             }
         }
@@ -69,21 +70,21 @@
             background: rgba(255, 255, 255, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.40);
             box-shadow: var(--shadow-l1);
-            transition: transform .25s ease, box-shadow .25s ease;
+            @include glass-hover-transition;
 
-            /* 与标签云一致的轻微 hover 反馈 */
+            /* 与标签云一致的 hover 高亮 */
             &:hover {
-                transform: translateY(var(--hover-lift));
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                background: var(--glass-chip-fill-hover);
+                border-color: var(--glass-border-color-hover);
             }
 
             [data-scheme="dark"] & {
                 background: rgba(255, 255, 255, 0.08);
                 border-color: rgba(255, 255, 255, 0.10);
 
-                /* 黑底上阴影不可见，改用提亮底色反馈 */
                 &:hover {
-                    background: rgba(255, 255, 255, 0.14);
+                    background: var(--glass-chip-fill-hover);
+                    border-color: var(--glass-border-color-hover);
                 }
             }
 
@@ -150,6 +151,7 @@
 
     .widget.toc-widget {
         position: relative;
+        transition: transform .12s ease;
 
         /* 点击整个卡片切换锁定，点击时轻微压下反馈 */
         &.toc-clicked {

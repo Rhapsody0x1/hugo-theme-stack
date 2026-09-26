@@ -94,7 +94,7 @@ html[data-scheme="dark"] {
     }
 }
 
-/* 尊重系统"减少动态效果"设置：去掉位移与过渡，保留状态变化本身 */
+/* 尊重系统"减少动态效果"设置：去掉过渡与动画，保留状态变化本身 */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -104,8 +104,25 @@ html[data-scheme="dark"] {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+}
 
-    :root {
-        --hover-lift: 0px;
+/* 全站键盘焦点环。:where() 零优先级，不覆盖组件自带的圆角 */
+:root {
+    --focus-ring: color-mix(in srgb, var(--accent-color) 60%, transparent);
+}
+
+[data-scheme="dark"] {
+    --focus-ring: rgba(160, 185, 230, 0.75);
+}
+
+:where(a, button, summary, input, [tabindex]):focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .article-list article .article-image img {
+        transform: none !important;
     }
 }

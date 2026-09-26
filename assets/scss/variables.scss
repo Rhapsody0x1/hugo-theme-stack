@@ -26,6 +26,16 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
     --chip-border-color: color-mix(in srgb, var(--accent-color) 12%, transparent);
     --chip-border-color-hover: color-mix(in srgb, var(--accent-color) 30%, transparent);
 
+    /* 玻璃卡片边框/底色，hover 时切换为高亮值，不位移。
+       浅色下卡片本已接近白色，提亮看不出来，所以浅色"变深"（主题色淡染）、深色"变亮"，
+       两种模式都朝拉开对比的方向走 */
+    --glass-border-color: rgba(255, 255, 255, 0.50);
+    --glass-fill: transparent;
+    --glass-border-color-hover: color-mix(in srgb, var(--accent-color) 38%, transparent);
+    --glass-fill-hover: color-mix(in srgb, var(--accent-color) 7%, transparent);
+    /* 标签云/归档小 chip：常态为半透明白底，hover 同样变深/变亮 */
+    --glass-chip-fill-hover: color-mix(in srgb, var(--accent-color) 9%, rgba(255, 255, 255, 0.55));
+
     --section-separation: 40px;
 
     --scrollbar-thumb: hsl(0, 0%, 85%);
@@ -41,6 +51,10 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
         --chip-background-hover: rgba(160, 185, 230, 0.30);
         --chip-border-color: rgba(160, 185, 230, 0.12);
         --chip-border-color-hover: rgba(160, 185, 230, 0.35);
+        --glass-border-color: rgba(255, 255, 255, 0.12);
+        --glass-border-color-hover: rgba(255, 255, 255, 0.28);
+        --glass-fill-hover: rgba(255, 255, 255, 0.06);
+        --glass-chip-fill-hover: rgba(255, 255, 255, 0.14);
         --scrollbar-thumb: hsl(0, 0%, 40%);
         --scrollbar-track: var(--body-background);
     }
@@ -198,7 +212,4 @@ $defaultTagColors: #fff, #fff, #fff, #fff, #fff;
     --menu-icon-separation: 40px;
     --container-padding: 15px;
     --widget-separation: var(--section-separation);
-
-    /* 全站统一的 hover 浮动幅度：仅用于整体可点的卡片/元素 */
-    --hover-lift: -3px;
 }
