@@ -30,8 +30,29 @@ function setupSmoothAnchors() {
                 top: offset,
                 behavior: "smooth"
             });
+            settleOn(target);
         });
     });
+}
+
+// 平滑滚动的目标偏移是出发时算的；途中屏幕外的块首次渲染（content-visibility:auto）或图片加载
+// 会改变上方内容的高度，所以滚动停下后再校正一次
+function settleOn(target: HTMLElement) {
+    let lastY = -1, still = 0;
+    const tick = () => {
+        if (window.scrollY !== lastY) {
+            lastY = window.scrollY;
+            still = 0;
+        } else if (++still < 4) {
+            // keep waiting
+        } else {
+            const delta = target.getBoundingClientRect().top;
+            if (Math.abs(delta) > 1) scrollBy(0, delta);
+            return;
+        }
+        requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
 }
 
 export { setupSmoothAnchors };

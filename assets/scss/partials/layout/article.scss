@@ -357,6 +357,19 @@
     padding: 0 var(--card-padding);
     line-height: var(--article-line-height);
 
+    /* 目录宽度过渡每帧重排整列正文，成本随正文总量增长；屏幕外的块跳过布局和绘制后，
+       成本只随可见内容增长。标题不跳过，scrollspy 要读它们的位置；figure 的高度由图注
+       和舞台比例决定，估算会引起位移，所以也不跳过。
+       跳过只在 main.ts 完整渲染过一帧后开启（.cv-ready）：每个块先记住真实高度，
+       之后锚点、scrollspy 和滚动条用的偏移才是准的；没有 JS 时整列照常渲染。 */
+    &>:not(h1, h2, h3, h4, h5, h6, figure) {
+        contain-intrinsic-size: auto 60px;
+    }
+
+    &.cv-ready>:not(h1, h2, h3, h4, h5, h6, figure) {
+        content-visibility: auto;
+    }
+
     &>p {
         margin: 0.25em 0;
     }
@@ -407,6 +420,11 @@
         figcaption {
             font-size: 1.4rem;
             color: var(--card-text-color-secondary);
+
+            /* 图注里的链接来自内嵌 HTML，没有 render hook 加的 .link，这里补上正文链接样式 */
+            a {
+                @extend .link;
+            }
         }
     }
 

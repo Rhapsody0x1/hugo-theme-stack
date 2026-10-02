@@ -28,6 +28,11 @@ let Stack = {
             new StackGallery(articleContent);
             setupSmoothAnchors();
             setupScrollspy();
+
+            // 正文块的 content-visibility:auto 等字体就绪、完整渲染过一帧后再开启，
+            // 让每个块先记住真实高度（见 article.scss 的 .cv-ready）
+            const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+            fontsReady.then(() => requestAnimationFrame(() => requestAnimationFrame(() => articleContent.classList.add('cv-ready'))));
         }
 
         // Initialize ToC toggle/lock behavior on pages that have right sidebar

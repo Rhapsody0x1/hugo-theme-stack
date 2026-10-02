@@ -79,8 +79,16 @@ function setupScrollspy() {
 
     let idToNavigationElement: IdToElementMap = buildIdToNavigationElementMap(navigation);
 
+    // 正文块用了 content-visibility:auto，屏幕外块首次渲染时高度会变，标题偏移随之变化
+    let documentHeight = document.documentElement.scrollHeight;
+
     function scrollHandler() {
         let scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+
+        if (document.documentElement.scrollHeight !== documentHeight) {
+            documentHeight = document.documentElement.scrollHeight;
+            sectionsOffsets = computeOffsets(headers);
+        }
 
         let newActiveSection: HTMLElement | undefined;
 
